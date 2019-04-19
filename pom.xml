@@ -79,6 +79,7 @@
                             <mainClass>com.kozitski.converter.ParquetConverter</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>park</finalName>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

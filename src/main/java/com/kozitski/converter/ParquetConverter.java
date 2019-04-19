@@ -25,7 +25,10 @@ public class ParquetConverter {
         Schema.Parser parser = new    Schema.Parser();
         Schema schema = null;
         try {
-            InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream("EmpSchema.avsc");
+            InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream("/user/maria_dev/test/EmpSchema.avsc");
+
+System.out.println(resourceAsStream);
+
             schema = parser.parse(resourceAsStream); // HERE NPE
 
         } catch (IOException e) {
@@ -36,7 +39,7 @@ public class ParquetConverter {
     }
 
     private static List<GenericData.Record> getRecords(Schema schema){
-        List<GenericData.Record> recordList = new ArrayList<GenericData.Record>();
+        List<GenericData.Record> recordList = new ArrayList<>();
         GenericData.Record record = new GenericData.Record(schema);
         // Adding 2 records
         record.put("id", 1);
