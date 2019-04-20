@@ -1,4 +1,4 @@
-package com.kozitski.converter;
+package com.kozitski.converter.useless;
 
 import java.io.IOException;
 import java.io.OutputStream;

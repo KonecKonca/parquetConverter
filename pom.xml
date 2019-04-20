@@ -57,6 +57,12 @@
             <version>1.10.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-mapred</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -76,7 +82,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.kozitski.converter.ParquetConverter</mainClass>
+                            <mainClass>com.kozitski.converter.AvroFileWrite</mainClass>
                         </manifest>
                     </archive>
                     <finalName>park</finalName>

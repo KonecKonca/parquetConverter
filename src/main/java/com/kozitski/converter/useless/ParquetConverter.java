@@ -1,4 +1,4 @@
-package com.kozitski.converter;
+package com.kozitski.converter.useless;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.mapred.Pair;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.parquet.avro.AvroParquetWriter;
@@ -22,20 +23,22 @@ public class ParquetConverter {
     }
 
     private static Schema parseSchema() {
-        Schema.Parser parser = new    Schema.Parser();
-        Schema schema = null;
-        try {
-            InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream("/user/maria_dev/test/EmpSchema.avsc");
 
-System.out.println(resourceAsStream);
+//        Schema.Parser parser = new    Schema.Parser();
+//        Schema schema = null;
+//        try {
+//            InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream("/user/maria_dev/test/EmpSchema.avsc");
+//
+//System.out.println(resourceAsStream);
+//
+//            schema = parser.parse(resourceAsStream); // HERE NPE
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return schema;
 
-            schema = parser.parse(resourceAsStream); // HERE NPE
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return schema;
-
+        return Pair.getPairSchema(Schema.create(Schema.Type.STRING), Schema.create(Schema.Type.INT));
     }
 
     private static List<GenericData.Record> getRecords(Schema schema){
