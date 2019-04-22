@@ -22,7 +22,7 @@ import java.net.URI;
 public class AvroFileWrite {
 
 //    public static final String AVRO_FILE_PATH = "/home/maria_dev/person.avro";
-    public static final String AVRO_FILE_PATH = "/user/maria_dev/test/person.avro";
+    public static final String AVRO_FILE_PATH = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/test/testTest.avro";
 
     public static void main(String[] args) {
 
@@ -37,16 +37,100 @@ public class AvroFileWrite {
         return SchemaBuilder.record("X")
                 .fields()
 
-                    .name("id")
+                    .name("date_time")
+                    .type("string")
+                    .noDefault()
+
+                    .name("site_name")
                     .type("int")
                     .noDefault()
 
-                    .name("Name")
+                    .name("posa_continent")
+                    .type("int")
+                    .noDefault()
+
+                    .name("user_location_country")
+                    .type("int")
+                    .noDefault()
+
+                    .name("user_location_region")
+                    .type("int")
+                    .noDefault()
+
+                    .name("user_location_city")
+                    .type("int")
+                    .noDefault()
+
+                    .name("orig_destination_distance")
+                    .type("double")
+                    .noDefault()
+
+                    .name("user_id")
+                    .type("int")
+                    .noDefault()
+
+                    .name("is_mobile")
+                    .type("int")
+                    .noDefault()
+
+                    .name("is_package")
+                    .type("int")
+                    .noDefault()
+
+                    .name("channel")
+                    .type("int")
+                    .noDefault()
+
+                    .name("srch_ci")
                     .type("string")
                     .noDefault()
 
-                    .name("Address")
+                    .name("srch_co")
                     .type("string")
+                    .noDefault()
+
+                    .name("srch_adults_cnt")
+                    .type("int")
+                    .noDefault()
+
+                    .name("srch_children_cnt")
+                    .type("int")
+                    .noDefault()
+
+                    .name("srch_rm_cnt")
+                    .type("int")
+                    .noDefault()
+
+                    .name("srch_destination_id")
+                    .type("int")
+                    .noDefault()
+
+                    .name("srch_destination_type_id")
+                    .type("int")
+                    .noDefault()
+
+                    .name("hotel_continent")
+                    .type("int")
+                    .noDefault()
+
+                    .name("hotel_country")
+                    .type("int")
+                    .noDefault()
+
+                    .name("hotel_market")
+                    .type("int")
+                    .noDefault()
+
+                    .name("is_booking")
+                    .type("int")
+                    .noDefault()
+
+                    .name("cnt")
+                    .type("long")
+                    .noDefault()
+
+                    .name("hotel_cluster")
+                    .type("int")
                     .noDefault()
 
                 .endRecord();
@@ -56,14 +140,35 @@ public class AvroFileWrite {
     private static void writeToAvro(Schema schema) {
 
         GenericRecord person1 = new GenericData.Record(schema);
-        person1.put("id", 1);
-        person1.put("Name", "Jack");
-        person1.put("Address", "1, Richmond Drive");
+        person1.put("date_time", "1111");
+        person1.put("site_name", 343);
+        person1.put("posa_continent", 4);
+        person1.put("user_location_country", 343);
+        person1.put("user_location_region", 354);
+        person1.put("user_location_city", 5465);
+        person1.put("orig_destination_distance", 35.5);
+        person1.put("user_id", 5465);
+        person1.put("is_mobile", 5465);
+        person1.put("is_package", 5465);
+        person1.put("channel", 3434);
+        person1.put("srch_ci", "1, Richmond Drive");
+        person1.put("srch_co", "1, Richmond Drive");
+        person1.put("srch_adults_cnt", 35);
+        person1.put("srch_children_cnt", 335);
+        person1.put("srch_rm_cnt", 5);
+        person1.put("srch_destination_id", 3);
+        person1.put("srch_destination_type_id", 3);
+        person1.put("hotel_continent", 2);
+        person1.put("hotel_country", 2);
+        person1.put("hotel_market", 2);
+        person1.put("is_booking", 3);
+        person1.put("cnt", 3L);
+        person1.put("hotel_cluster", 3);
 
-        GenericRecord person2 = new GenericData.Record(schema);
-        person2.put("id", 2);
-        person2.put("Name", "Jill");
-        person2.put("Address", "2, Richmond Drive");
+//        GenericRecord person2 = new GenericData.Record(schema);
+//        person2.put("id", 2);
+//        person2.put("Name", "Jill");
+//        person2.put("Address", "2, Richmond Drive");
 
         DatumWriter<GenericRecord> datumWriter = new
                 GenericDatumWriter<>(schema);
@@ -80,7 +185,7 @@ public class AvroFileWrite {
             dataFileWriter.create(schema, out);
 
             dataFileWriter.append(person1);
-            dataFileWriter.append(person2);
+//            dataFileWriter.append(person2);
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
@@ -97,7 +202,6 @@ public class AvroFileWrite {
             }
 
         }
-
     }
 
     private static void readFromAvroFile(Schema schema) {
