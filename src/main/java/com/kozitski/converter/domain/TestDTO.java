@@ -28,7 +28,7 @@ public class TestDTO {
     private Optional<String> srch_co;
     private Optional<Integer> srch_adults_cnt;
     private Optional<Integer> srch_children_cnt;
-    private Optional<Long> srch_rm_cnt;
+    private Optional<String> srch_rm_cnt;
     private Optional<Integer> srch_destination_id;
     private Optional<Integer> srch_destination_type_id;
     private Optional<Integer> hotel_continent;

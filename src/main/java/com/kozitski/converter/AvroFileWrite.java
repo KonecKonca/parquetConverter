@@ -31,7 +31,7 @@ public class AvroFileWrite {
     public static void main(String[] args) {
 
         Schema schema = parseSchema();
-//        writeToAvro(schema);
+        writeToAvro(schema);
 
         readFromAvroFile(schema);
 
@@ -176,8 +176,6 @@ public class AvroFileWrite {
 
         CsvReader csvReader = new CsvReader();
         List<TestDTO> testDTOS = csvReader.readAll();
-
-System.out.println("__testDTOS: " + testDTOS.size());
 
         List<GenericRecord> tests = new LinkedList<>();
         testDTOS.forEach(e -> {
