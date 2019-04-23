@@ -15,16 +15,12 @@ import java.util.Optional;
 
 public class CsvReader {
     private static final int PARTS_SIZE = 100_000;
-    private int counter = 0;
+    private int cursor;
     @Getter private boolean hasMore = true;
     private BufferedReader br;
 
     private static final String READING_FILE_PATH = "/user/maria_dev/data/test.csv";
 //    private static final String READING_FILE_PATH = "C:\\Users\\Andrei_Kazitski\\Desktop\\dataData\\unziped\\test.csv";
-
-    public static void main(String[] args) {
-        new CsvReader().readPart();
-    }
 
     public CsvReader(){
         Path pt = new Path(READING_FILE_PATH);
@@ -37,6 +33,7 @@ public class CsvReader {
         }
     }
 
+
     public List<TestDTO> readPart(){
         List<TestDTO> result = new LinkedList<>();
 
@@ -45,7 +42,7 @@ public class CsvReader {
             line = br.readLine();
 
             int writeCounter = 0;
-            while (line != null && counter++ < PARTS_SIZE ){
+            while (line != null && cursor++ < PARTS_SIZE ){
                 line = br.readLine();
                 result.add(parseLine(line));
 System.out.println(writeCounter++);
@@ -55,7 +52,7 @@ System.out.println(writeCounter++);
                 hasMore = false;
             }
 
-            counter = 0;
+            cursor = 0;
         }
         catch(Exception e){
             System.err.println("poblems during file reading");
@@ -65,6 +62,8 @@ System.out.println(writeCounter++);
         return result;
     }
 
+
+
     private TestDTO parseLine(String line) {
         TestDTO result = null;
 
@@ -72,34 +71,42 @@ System.out.println(writeCounter++);
             String[] fields = line.split(",");
 
             result = TestDTO.builder()
-                    .id(Optional.of(fields[0]))
-                    .date_time(Optional.of(fields[1]))
-                    .site_name(intWithNulParse(fields[2]))
-                    .posa_continent(intWithNulParse(fields[3]))
-                    .user_location_country(intWithNulParse(fields[4]))
-                    .user_location_region(intWithNulParse(fields[5]))
-                    .user_location_city(intWithNulParse(fields[6]))
-                    .orig_destination_distance(doubleWithNulParse(fields[7]))
-                    .user_id(intWithNulParse(fields[8]))
-                    .is_mobile(intWithNulParse(fields[9]))
-                    .is_package(intWithNulParse(fields[10]))
+                    .id(stringWithNulParse(fields[0]))
+                    .dateTime(stringWithNulParse(fields[1]))
+                    .siteName(intWithNulParse(fields[2]))
+                    .posaContinent(intWithNulParse(fields[3]))
+                    .userLocationCountry(intWithNulParse(fields[4]))
+                    .userLocationRegion(intWithNulParse(fields[5]))
+                    .userLocationCity(intWithNulParse(fields[6]))
+                    .origDestinationDistance(doubleWithNulParse(fields[7]))
+                    .userId(intWithNulParse(fields[8]))
+                    .isMobile(intWithNulParse(fields[9]))
+                    .isPackage(intWithNulParse(fields[10]))
                     .channel(intWithNulParse(fields[11]))
-                    .srch_ci(Optional.of(fields[12]))
-                    .srch_co(Optional.of(fields[13]))
-                    .srch_adults_cnt(intWithNulParse(fields[14]))
-                    .srch_children_cnt(intWithNulParse(fields[15]))
-                    .srch_rm_cnt(Optional.of(fields[16]))
-                    .srch_destination_id(intWithNulParse(fields[17]))
-                    .srch_destination_type_id(intWithNulParse(fields[18]))
-                    .hotel_continent(intWithNulParse(fields[19]))
-                    .hotel_country(intWithNulParse(fields[20]))
-                    .hotel_market(intWithNulParse(fields[21]))
+                    .srchCi(stringWithNulParse(fields[12]))
+                    .srchCo(stringWithNulParse(fields[13]))
+                    .srchAdultsCnt(intWithNulParse(fields[14]))
+                    .srchChildrenCnt(intWithNulParse(fields[15]))
+                    .srchRmCnt(stringWithNulParse(fields[16]))
+                    .srchDestinationId(intWithNulParse(fields[17]))
+                    .srchDestinationTypeId(intWithNulParse(fields[18]))
+                    .hotelContinent(intWithNulParse(fields[19]))
+                    .hotelCountry(intWithNulParse(fields[20]))
+                    .hotelMarket(intWithNulParse(fields[21]))
                     .build();
         }
 
         return result;
     }
+    private Optional<String> stringWithNulParse(String str){
+        Optional<String> result = Optional.empty();
 
+        if (str != null && !str.isEmpty()){
+            result = Optional.of(str);
+        }
+
+        return result;
+    }
     private Optional<Integer> intWithNulParse(String str){
         Optional<Integer> result = Optional.empty();
 
