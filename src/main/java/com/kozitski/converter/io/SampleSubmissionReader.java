@@ -1,6 +1,6 @@
 package com.kozitski.converter.io;
 
-import com.kozitski.converter.domain.TestDTO;
+import com.kozitski.converter.domain.SampleSubmitionDTO;
 import lombok.Getter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -13,16 +13,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class CsvReader {
+public class SampleSubmissionReader {
+
     private static final int PARTS_SIZE = 100_000;
     private int cursor;
-    @Getter private boolean hasMore = true;
+    @Getter
+    private boolean hasMore = true;
     private BufferedReader br;
 
-    private static final String READING_FILE_PATH = "/user/maria_dev/data/test.csv";
-//    private static final String READING_FILE_PATH = "C:\\Users\\Andrei_Kazitski\\Desktop\\dataData\\unziped\\test.csv";
+    private static final String READING_FILE_PATH = "/user/maria_dev/data/sample_submission.csv";
 
-    public CsvReader(){
+    public SampleSubmissionReader(){
         Path pt = new Path(READING_FILE_PATH);
         try {
             FileSystem fs = FileSystem.get(new Configuration());
@@ -34,8 +35,8 @@ public class CsvReader {
     }
 
 
-    public List<TestDTO> readPart(){
-        List<TestDTO> result = new LinkedList<>();
+    public List<SampleSubmitionDTO> readPart(){
+        List<SampleSubmitionDTO> result = new LinkedList<>();
 
         try{
             String line;
@@ -45,7 +46,7 @@ public class CsvReader {
             while (line != null && cursor++ < PARTS_SIZE ){
                 line = br.readLine();
                 result.add(parseLine(line));
-System.out.println(writeCounter++);
+                System.out.println(writeCounter++);
             }
 
             if(line == null){
@@ -64,36 +65,16 @@ System.out.println(writeCounter++);
 
 
 
-    private TestDTO parseLine(String line) {
-        TestDTO result = null;
+    private SampleSubmitionDTO parseLine(String line) {
+        SampleSubmitionDTO result = null;
 
         if(line != null && !line.isEmpty()){
             String[] fields = line.split(",");
 
-            result = TestDTO.builder()
-                    .id(stringWithNulParse(fields[0]))
-                    .dateTime(stringWithNulParse(fields[1]))
-                    .siteName(intWithNulParse(fields[2]))
-                    .posaContinent(intWithNulParse(fields[3]))
-                    .userLocationCountry(intWithNulParse(fields[4]))
-                    .userLocationRegion(intWithNulParse(fields[5]))
-                    .userLocationCity(intWithNulParse(fields[6]))
-                    .origDestinationDistance(doubleWithNulParse(fields[7]))
-                    .userId(intWithNulParse(fields[8]))
-                    .isMobile(intWithNulParse(fields[9]))
-                    .isPackage(intWithNulParse(fields[10]))
-                    .channel(intWithNulParse(fields[11]))
-                    .srchCi(stringWithNulParse(fields[12]))
-                    .srchCo(stringWithNulParse(fields[13]))
-                    .srchAdultsCnt(intWithNulParse(fields[14]))
-                    .srchChildrenCnt(intWithNulParse(fields[15]))
-                    .srchRmCnt(stringWithNulParse(fields[16]))
-                    .srchDestinationId(intWithNulParse(fields[17]))
-                    .srchDestinationTypeId(intWithNulParse(fields[18]))
-                    .hotelContinent(intWithNulParse(fields[19]))
-                    .hotelCountry(intWithNulParse(fields[20]))
-                    .hotelMarket(intWithNulParse(fields[21]))
-                    .build();
+            result = new SampleSubmitionDTO();
+            result.setId(intWithNulParse(fields[0]));
+            result.setHotelCluster(stringWithNulParse(fields[1]));
+
         }
 
         return result;

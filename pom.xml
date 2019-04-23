@@ -89,7 +89,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.kozitski.converter.AvroFileWrite</mainClass>
+                            <mainClass>com.kozitski.converter.writer.SampleSubmissonWriter</mainClass>
                         </manifest>
                     </archive>
                     <finalName>park</finalName>

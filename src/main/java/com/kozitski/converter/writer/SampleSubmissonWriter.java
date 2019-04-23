@@ -1,10 +1,12 @@
-package com.kozitski.converter;
+package com.kozitski.converter.writer;
 
+import com.kozitski.converter.domain.SampleSubmitionDTO;
 import com.kozitski.converter.domain.TestDTO;
-import com.kozitski.converter.io.CsvReader;
+import com.kozitski.converter.io.SampleSubmissionReader;
+import com.kozitski.converter.io.TestCsvReader;
+import com.kozitski.converter.schema.SampleSubmissonSchemaGenerator;
 import com.kozitski.converter.schema.TestSchemaGenerator;
 import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.generic.GenericData;
@@ -24,13 +26,13 @@ import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AvroFileWrite {
+public class SampleSubmissonWriter {
 
-    private static final String AVRO_FILE_PATH = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/avro_data/test.avro";
+    private static final String AVRO_FILE_PATH = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/avro_data/sampleSubmission.avro";
 
     public static void main(String[] args) {
 
-        Schema schema = new TestSchemaGenerator().generate();
+        Schema schema = new SampleSubmissonSchemaGenerator().generate();
         writeToAvro(schema);
 
         readFromAvroFile(schema);
@@ -52,37 +54,17 @@ public class AvroFileWrite {
 
             dataFileWriter.create(schema, out);
 
-            CsvReader csvReader = new CsvReader();
-            while (csvReader.isHasMore()){
-                List<TestDTO> testDTOS = csvReader.readPart();
+            SampleSubmissionReader sampleSubmissionReader = new SampleSubmissionReader();
+            while (sampleSubmissionReader.isHasMore()){
+                List<SampleSubmitionDTO> sampleSubmitionDTOS = sampleSubmissionReader.readPart();
 
                 List<GenericRecord> tests = new LinkedList<>();
-                testDTOS.forEach(e -> {
+                sampleSubmitionDTOS.forEach(e -> {
                     if(e != null){
                         GenericData.Record record = new GenericData.Record(schema);
 
                         record.put("id", e.getId().orElse(null));
-                        record.put("dateTime", e.getDateTime().orElse(null));
-                        record.put("siteName", e.getSiteName().orElse(null));
-                        record.put("posaContinent", e.getPosaContinent().orElse(null));
-                        record.put("userLocationCountry", e.getUserLocationCountry().orElse(null));
-                        record.put("userLocationRegion", e.getUserLocationRegion().orElse(null));
-                        record.put("userLocationCity", e.getUserLocationCity().orElse(null));
-                        record.put("origDestinationDistance", e.getOrigDestinationDistance().orElse(null));
-                        record.put("userId", e.getUserId().orElse(null));
-                        record.put("isMobile", e.getIsMobile().orElse(null));
-                        record.put("isPackage", e.getIsPackage().orElse(null));
-                        record.put("channel", e.getChannel().orElse(null));
-                        record.put("srchCi", e.getSrchCi().orElse(null));
-                        record.put("srchCo", e.getSrchCo().orElse(null));
-                        record.put("srchAdultsCnt", e.getSrchAdultsCnt().orElse(null));
-                        record.put("srchChildrenCnt", e.getSrchChildrenCnt().orElse(null));
-                        record.put("srchRmCnt", e.getSrchRmCnt().orElse(null));
-                        record.put("srchDestinationId", e.getSrchDestinationId().orElse(null));
-                        record.put("srchDestinationTypeId", e.getSrchDestinationTypeId().orElse(null));
-                        record.put("hotelContinent", e.getHotelContinent().orElse(null));
-                        record.put("hotelCountry", e.getHotelCountry().orElse(null));
-                        record.put("hotelMarket", e.getHotelMarket().orElse(null));
+                        record.put("hotelCluster",e.getHotelCluster().orElse(null));
 
                         tests.add(record);
                     }

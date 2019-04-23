@@ -3,14 +3,13 @@ package com.kozitski.converter.schema;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
-public class TestSchemaGenerator implements SchemaGenerator{
+public class TrainSchemaGenerator implements SchemaGenerator{
 
     @Override
     public Schema generate() {
         return SchemaBuilder
-            .record("Test")
+            .record("Train")
                 .fields()
-                .optionalString("id")
                 .optionalString("dateTime")
                 .optionalInt("siteName")
                 .optionalInt("posaContinent")
@@ -29,11 +28,17 @@ public class TestSchemaGenerator implements SchemaGenerator{
                 .optionalString("srchRmCnt")
                 .optionalInt("srchDestinationId")
                 .optionalInt("srchDestinationTypeId")
+
+                .optionalInt("isBooking")
+                .optionalLong("cnt")
+
                 .optionalInt("hotelContinent")
                 .optionalInt("hotelCountry")
                 .optionalInt("hotelMarket")
+
+                .optionalInt("hotelCluster")
+
             .endRecord();
     }
-
 
 }
