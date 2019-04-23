@@ -25,8 +25,7 @@ import java.util.List;
 
 public class AvroFileWrite {
 
-//    public static final String AVRO_FILE_PATH = "/home/maria_dev/person.avro";
-    public static final String AVRO_FILE_PATH = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/avro_data/test.avro";
+    private static final String AVRO_FILE_PATH = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/avro_data/test.avro";
 
     public static void main(String[] args) {
 
@@ -42,93 +41,29 @@ public class AvroFileWrite {
         return SchemaBuilder.record("X")
                 .fields()
 
-                    .name("id")
-                    .type("string")
-                    .noDefault()
+                    .optionalString("id")
+                    .optionalString("date_time")
+                    .optionalInt("site_name")
+                    .optionalInt("posa_continent")
+                    .optionalInt("user_location_country")
+                    .optionalInt("user_location_region")
+                    .optionalInt("user_location_city")
+                    .optionalDouble("orig_destination_distance")
+                    .optionalInt("user_id")
+                    .optionalInt("is_mobile")
+                    .optionalInt("is_package")
+                    .optionalInt("channel")
+                    .optionalString("srch_ci")
+                    .optionalString("srch_co")
+                    .optionalInt("srch_adults_cnt")
+                    .optionalInt("srch_children_cnt")
+                    .optionalString("srch_rm_cnt")
+                    .optionalInt("srch_destination_id")
+                    .optionalInt("srch_destination_type_id")
+                    .optionalInt("hotel_continent")
+                    .optionalInt("hotel_country")
+                    .optionalInt("hotel_market")
 
-                    .name("date_time")
-                    .type("string")
-                    .noDefault()
-
-                    .name("site_name")
-                    .type("int")
-                    .noDefault()
-
-                    .name("posa_continent")
-                    .type("int")
-                    .noDefault()
-
-                    .name("user_location_country")
-                    .type("int")
-                    .noDefault()
-
-                    .name("user_location_region")
-                    .type("int")
-                    .noDefault()
-
-                    .name("user_location_city")
-                    .type("int")
-                    .noDefault()
-
-                    .name("orig_destination_distance")
-                    .type("double")
-                    .noDefault()
-
-                    .name("user_id")
-                    .type("int")
-                    .noDefault()
-
-                    .name("is_mobile")
-                    .type("int")
-                    .noDefault()
-
-                    .name("is_package")
-                    .type("int")
-                    .noDefault()
-
-                    .name("channel")
-                    .type("int")
-                    .noDefault()
-
-                    .name("srch_ci")
-                    .type("string")
-                    .noDefault()
-
-                    .name("srch_co")
-                    .type("string")
-                    .noDefault()
-
-                    .name("srch_adults_cnt")
-                    .type("int")
-                    .noDefault()
-
-                    .name("srch_children_cnt")
-                    .type("int")
-                    .noDefault()
-
-                    .name("srch_rm_cnt")
-                    .type("int")
-                    .noDefault()
-
-                    .name("srch_destination_id")
-                    .type("int")
-                    .noDefault()
-
-                    .name("srch_destination_type_id")
-                    .type("int")
-                    .noDefault()
-
-                    .name("hotel_continent")
-                    .type("int")
-                    .noDefault()
-
-                    .name("hotel_country")
-                    .type("int")
-                    .noDefault()
-
-                    .name("hotel_market")
-                    .type("int")
-                    .noDefault()
 
 //                    .name("is_booking")
 //                    .type("int")
@@ -174,38 +109,6 @@ public class AvroFileWrite {
 //        person1.put("cnt", 3L);
 //        person1.put("hotel_cluster", 3);
 
-        CsvReader csvReader = new CsvReader();
-        List<TestDTO> testDTOS = csvReader.readAll();
-
-        List<GenericRecord> tests = new LinkedList<>();
-        testDTOS.forEach(e -> {
-            GenericData.Record record = new GenericData.Record(schema);
-
-            record.put("id", e.getId().orElse(null));
-            record.put("date_time", e.getDate_time().orElse(null));
-            record.put("site_name", e.getSite_name().orElse(null));
-            record.put("posa_continent", e.getPosa_continent().orElse(null));
-            record.put("user_location_country", e.getUser_location_country().orElse(null));
-            record.put("user_location_region", e.getUser_location_region().orElse(null));
-            record.put("user_location_city", e.getUser_location_city().orElse(null));
-            record.put("orig_destination_distance", e.getOrig_destination_distance().orElse(null));
-            record.put("user_id", e.getUser_id().orElse(null));
-            record.put("is_mobile", e.getIs_mobile().orElse(null));
-            record.put("is_package", e.getIs_package().orElse(null));
-            record.put("channel", e.getChannel().orElse(null));
-            record.put("srch_ci", e.getSrch_ci().orElse(null));
-            record.put("srch_co", e.getSrch_co().orElse(null));
-            record.put("srch_adults_cnt", e.getSrch_adults_cnt().orElse(null));
-            record.put("srch_children_cnt", e.getSrch_children_cnt().orElse(null));
-            record.put("srch_rm_cnt", e.getSrch_rm_cnt().orElse(null));
-            record.put("srch_destination_id", e.getSrch_destination_id().orElse(null));
-            record.put("srch_destination_type_id", e.getSrch_destination_type_id().orElse(null));
-            record.put("hotel_continent", e.getHotel_continent().orElse(null));
-            record.put("hotel_country", e.getHotel_country().orElse(null));
-            record.put("hotel_market", e.getHotel_market().orElse(null));
-
-            tests.add(record);
-        });
 
         DatumWriter<GenericRecord> datumWriter = new GenericDatumWriter<>(schema);
         DataFileWriter<GenericRecord> dataFileWriter = null;
@@ -220,15 +123,48 @@ public class AvroFileWrite {
 
             dataFileWriter.create(schema, out);
 
-            for (GenericRecord record: tests) {
-                dataFileWriter.append(record);
+            CsvReader csvReader = new CsvReader();
+            while (csvReader.isHasMore()){
+                List<TestDTO> testDTOS = csvReader.readPart();
+
+                List<GenericRecord> tests = new LinkedList<>();
+                testDTOS.forEach(e -> {
+                    GenericData.Record record = new GenericData.Record(schema);
+
+                    record.put("id", e.getId().orElse(null));
+                    record.put("date_time", e.getDate_time().orElse(null));
+                    record.put("site_name", e.getSite_name().orElse(null));
+                    record.put("posa_continent", e.getPosa_continent().orElse(null));
+                    record.put("user_location_country", e.getUser_location_country().orElse(null));
+                    record.put("user_location_region", e.getUser_location_region().orElse(null));
+                    record.put("user_location_city", e.getUser_location_city().orElse(null));
+                    record.put("orig_destination_distance", e.getOrig_destination_distance().orElse(null));
+                    record.put("user_id", e.getUser_id().orElse(null));
+                    record.put("is_mobile", e.getIs_mobile().orElse(null));
+                    record.put("is_package", e.getIs_package().orElse(null));
+                    record.put("channel", e.getChannel().orElse(null));
+                    record.put("srch_ci", e.getSrch_ci().orElse(null));
+                    record.put("srch_co", e.getSrch_co().orElse(null));
+                    record.put("srch_adults_cnt", e.getSrch_adults_cnt().orElse(null));
+                    record.put("srch_children_cnt", e.getSrch_children_cnt().orElse(null));
+                    record.put("srch_rm_cnt", e.getSrch_rm_cnt().orElse(null));
+                    record.put("srch_destination_id", e.getSrch_destination_id().orElse(null));
+                    record.put("srch_destination_type_id", e.getSrch_destination_type_id().orElse(null));
+                    record.put("hotel_continent", e.getHotel_continent().orElse(null));
+                    record.put("hotel_country", e.getHotel_country().orElse(null));
+                    record.put("hotel_market", e.getHotel_market().orElse(null));
+
+                    tests.add(record);
+                });
+                for (GenericRecord record: tests) {
+                    dataFileWriter.append(record);
+                    System.out.println("....record was appended");
+                }
             }
-//            dataFileWriter.append(person1);
-//            dataFileWriter.append(person2);
 
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.err.println("Exception during writing AVRO");
             e.printStackTrace();
         }
         finally {

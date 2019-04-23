@@ -34,8 +34,4 @@ public class TestDTO {
     private Optional<Integer> hotel_continent;
     private Optional<Integer> hotel_country;
     private Optional<Integer> hotel_market;
-//    private Integereger is_booking;
-//    private long cnt;
-//    private Integer hotel_cluster;
-    
 }

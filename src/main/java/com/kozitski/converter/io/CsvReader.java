@@ -1,39 +1,61 @@
 package com.kozitski.converter.io;
 
 import com.kozitski.converter.domain.TestDTO;
+import lombok.Getter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class CsvReader {
+    private static final int PARTS_SIZE = 100_000;
+    private int counter = 0;
+    @Getter private boolean hasMore = true;
+    private BufferedReader br;
+
     private static final String READING_FILE_PATH = "/user/maria_dev/data/test.csv";
 //    private static final String READING_FILE_PATH = "C:\\Users\\Andrei_Kazitski\\Desktop\\dataData\\unziped\\test.csv";
 
     public static void main(String[] args) {
-        new CsvReader().readAll();
+        new CsvReader().readPart();
     }
 
-    public List<TestDTO> readAll(){
+    public CsvReader(){
+        Path pt = new Path(READING_FILE_PATH);
+        try {
+            FileSystem fs = FileSystem.get(new Configuration());
+            br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public List<TestDTO> readPart(){
         List<TestDTO> result = new LinkedList<>();
 
         try{
-            Path pt = new Path(READING_FILE_PATH);
-            FileSystem fs = FileSystem.get(new Configuration());
-            BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
             String line;
             line = br.readLine();
 
-            while (line != null){
+            int writeCounter = 0;
+            while (line != null && counter++ < PARTS_SIZE ){
                 line = br.readLine();
                 result.add(parseLine(line));
+System.out.println(writeCounter++);
             }
 
+            if(line == null){
+                hasMore = false;
+            }
+
+            counter = 0;
         }
         catch(Exception e){
             System.err.println("poblems during file reading");
